@@ -41,7 +41,7 @@ def pred_emotion(result):
     emot_i=svm_clf.predict(test_data)
     emo=[]
     for i in emot_i:
-        emo.append(emotions[i])
+        emo.append(emotions[i-1])
 
     emo_df=pd.DataFrame({'emotion':emo},)
     return emo_df
@@ -53,10 +53,11 @@ def main_func2():
     audio_test = pd.concat([id_df, audio_f_df], axis=1)
     audio_test.to_csv('test_data/test.csv')
     emo=pred_emotion(audio_test)
+    emo_list=emo['emotion'].tolist()
     audio_result=pd.DataFrame({'title':audio_test['title'].tolist(),
                                'artist':audio_test['artist'].tolist(),
-                               'path':audio_test['path'].tolist(),
-                               'emotion':emo},)
+                               'path':audio_test['paths'].tolist(),
+                               'mood':emo_list},)
 
     audio_result.to_csv('test_data/result.csv')
 
